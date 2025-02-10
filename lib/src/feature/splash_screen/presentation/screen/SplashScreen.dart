@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vortex/src/feature/splash_screen/domain/SplashUseCase.dart';
 import 'package:vortex/src/feature/splash_screen/presentation/bloc/SplashBloc.dart';
+import 'package:vortex/src/feature/splash_screen/presentation/bloc/SplashState.dart';
 import '../../../../core/constants/image_strings.dart';
 import '../../../../core/constants/size.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../welcome_screen/presentation/screen/welcome_screen.dart';
-import '../Bloc/SplashState.dart';
 import '../bloc/SplashEvent.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -16,12 +16,24 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SplashBloc(splashUseCase: Splashusecase())..add(StartSplashAnimation()),
+      create: (context) =>
+      SplashBloc(splashUseCase: Splashusecase())..add(StartSplashAnimation()),
       child: BlocListener<SplashBloc, SplashState>(
         listener: (context, state) {
-          if (state is SplashCompleted) {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
+          if (state is SplashFadingOut) {
+            Navigator.of(context).pushReplacement(
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                const WelcomeScreen(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 1000),
+              ),
+            );
           }
         },
         child: Scaffold(
@@ -33,10 +45,12 @@ class SplashScreen extends StatelessWidget {
               if (state is SplashAnimating) {
                 opacity = state.opacity;
                 animated = state.animated;
+              } else if (state is SplashFadingOut) {
+                opacity = 0.0;
               }
 
               return AnimatedOpacity(
-                duration: const Duration(seconds: 3),
+                duration: const Duration(seconds: 1),
                 opacity: opacity,
                 child: Container(
                   decoration: BoxDecoration(
