@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/image_strings.dart';
 import '../../../../core/constants/size.dart';
 import '../../../../core/constants/strings.dart';
-
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -21,8 +21,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
     // Hides the status bar and the navigation bar
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-    // Optionally, you can customize the status bar style
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // Transparent status bar
       statusBarIconBrightness: Brightness.light, // Light icons
     ));
@@ -33,44 +32,52 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          /*image: DecorationImage(
+          image: DecorationImage(
             image: AssetImage(tWelcomeScreenImage),
             fit: BoxFit.cover,
-          ),*/
+          ),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center, // Center everything vertically
           children: [
-            Image(image: AssetImage(tWelcomeLogo)),
-            Text(
-              tWelcomeTitle,
-              style: TextStyle(
-                fontSize: tDefaultSize,
+            Expanded(
+              child: Center( // Ensures animation stays in center
+                child: Lottie.asset(
+                  tAnimation,
+                  width: 500,
+                  height: 500,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: tSecondaryColor, // Fill with color
-                      foregroundColor: Colors.white, // Text color
-                      side: BorderSide(color: tSecondaryColor), // Border color
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                    ),
-                    child: Text(tLogin)),
-                SizedBox(width: 50),
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: tSecondaryColor,
+                    foregroundColor: Colors.white,
+                    side: const BorderSide(color: tSecondaryColor),
+                    padding: const EdgeInsets.symmetric(horizontal: 50,
+                        vertical: 20),
+                  ),
+                  child: Text(tLogin),
+                ),
+                const SizedBox(width: 50),
                 ElevatedButton(
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.black,
-                    side: BorderSide(color: Colors.white),
+                    side: const BorderSide(color: Colors.white),
+                    padding: const EdgeInsets.symmetric(horizontal: 50,
+                        vertical: 20),
                   ),
                   onPressed: () {},
                   child: Text(tSignUp),
                 ),
               ],
             ),
+            const SizedBox(height: 200),
           ],
         ),
       ),
