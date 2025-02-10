@@ -1,5 +1,3 @@
-
-
 import 'package:equatable/equatable.dart';
 
 abstract class SplashState extends Equatable {
@@ -19,4 +17,7 @@ class SplashAnimating extends SplashState {
   List<Object> get props => [opacity, animated];
 }
 
+class SplashFadingOut extends SplashState {}
+
 class SplashCompleted extends SplashState {}
+
