@@ -6,3 +6,4 @@ const String tWelcomeLogo = "assets/images/cloudy.png";
 const String tAnimation = "assets/animations/animation.json";
 const String tBackground = "assets/images/back.jpg";
 const String tCloud ="assets/images/cloud.jpg";
+const String tGoogleLogo = "assets/images/google_logo.png";

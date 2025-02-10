@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
+import 'package:vortex/src/feature/authentication/presentation/login/screen/LoginScreen.dart';
+import 'package:vortex/src/feature/authentication/presentation/signUp/screen/SignUpScreen.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/image_strings.dart';
 import '../../../../core/constants/strings.dart';
+
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -74,7 +77,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Loginscreen(),
+                        ),
+                      );
+                    },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: tSecondaryColor,
                       foregroundColor: Colors.white,
@@ -90,7 +100,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       side: const BorderSide(color: Colors.white),
                       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpScreen(),
+                        ),
+                      );
+                    },
                     child: Text(tSignUp),
                   ),
                 ],
