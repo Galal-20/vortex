@@ -19,6 +19,8 @@ class LoginHeaderWidget extends StatelessWidget {
         Image(image: AssetImage(tWelcomeLogo), height: size.height * 0.2,),
         SizedBox(height: 20,),
         Text("Welcome Back", style: Theme.of(context).textTheme.headlineLarge,),
+        Text("Make it work, make it right, make it fast",
+          style: Theme.of(context).textTheme.bodySmall,)
       ],
     );
   }

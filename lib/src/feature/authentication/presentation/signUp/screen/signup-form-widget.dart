@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/strings.dart';
 
-class LoginForm extends StatelessWidget {
-  const LoginForm({
+class SignUpFormWidget extends StatelessWidget {
+  const SignUpFormWidget({
     super.key,
   });
 
@@ -19,8 +18,28 @@ class LoginForm extends StatelessWidget {
               TextFormField(
                 decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.person_outline_outlined),
-                    labelText: "Email",
-                    hintText: "Email",
+                    labelText: "Full Name ",
+                    hintText: "Full Name",
+                    border: OutlineInputBorder()
+                ),
+              ),
+              SizedBox(height: 20,),
+              TextFormField(
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.fingerprint),
+                  labelText: "E-mail",
+                  hintText: "Email",
+                  border: OutlineInputBorder(),
+                  /*suffixIcon: IconButton(onPressed: null,
+                        icon: Icon(Icons.remove_red_eye))*/
+                ),
+              ),
+              SizedBox(height: 20,),
+              TextFormField(
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.numbers_outlined),
+                    labelText: "Phone Number ",
+                    hintText: "Phone Number",
                     border: OutlineInputBorder()
                 ),
               ),
@@ -35,20 +54,12 @@ class LoginForm extends StatelessWidget {
                         icon: Icon(Icons.remove_red_eye))
                 ),
               ),
-              SizedBox(height: 5,),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(onPressed: (){},
-                    child: Text(
-                      "Forget Password?",
-                      style: TextStyle(color: Colors.red),)
-                ),
-              ),
+              SizedBox(height: 20,),
               SizedBox(
                 width: double.infinity,
-                height: 60,
+                height: 50,
                 child: ElevatedButton(onPressed: (){},
-                    child: Text(tLogin, style: TextStyle(color: Colors.black),)
+                    child: Text(tSignUp, style: TextStyle(color: Colors.black),)
                 ),
               )
             ],
@@ -56,3 +67,4 @@ class LoginForm extends StatelessWidget {
         ));
   }
 }
+

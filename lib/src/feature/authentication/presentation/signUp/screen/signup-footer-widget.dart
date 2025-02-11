@@ -1,11 +1,9 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/image_strings.dart';
 
-class LoginFooterWidget extends StatelessWidget {
-  const LoginFooterWidget({
+class SignUpFooterWidget extends StatelessWidget {
+  const SignUpFooterWidget({
     super.key,
   });
 
@@ -27,7 +25,7 @@ class LoginFooterWidget extends StatelessWidget {
               icon: Image(
                 image: AssetImage(tGoogleLogo), width: 25.0,),
               onPressed: (){},
-              label: Text("Sign-in with Google",
+              label: Text("SIGN-IN WITH GOOGLE",
                 style: TextStyle(color: Colors.black),)),
         ),
         const SizedBox(height: 20,),
@@ -35,11 +33,11 @@ class LoginFooterWidget extends StatelessWidget {
             onPressed: (){},
             child: Text.rich(
                 TextSpan(
-                    text: "Don't have an Account? ",
+                    text: "Already have an Account? ",
                     style: Theme.of(context).textTheme.bodyMedium,
                     children: const[
                       TextSpan(
-                          text: "Sign-Up",
+                          text: "Login",
                           style: TextStyle(color: Colors.blueAccent)
                       )
                     ]
@@ -51,3 +49,4 @@ class LoginFooterWidget extends StatelessWidget {
     );
   }
 }
+
