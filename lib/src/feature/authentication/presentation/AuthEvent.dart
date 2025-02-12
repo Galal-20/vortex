@@ -25,4 +25,4 @@ class LoginRequested extends AuthEvent {
 
 class LogoutRequested extends AuthEvent {}
 
-class AutoLoginRequested extends AuthEvent {} // ✅ Move this here
+class AutoLoginRequested extends AuthEvent {}

@@ -12,9 +12,8 @@ import 'package:vortex/src/feature/splash_screen/presentation/bloc/SplashBloc.da
 import 'package:vortex/src/feature/splash_screen/presentation/screen/SplashScreen.dart';
 
 void main() async{
-  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLoggedIn = prefs.getBool("isLoggedIn") ?? false;
   runApp(

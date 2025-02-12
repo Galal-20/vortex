@@ -68,7 +68,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await prefs.remove("isLoggedIn");
     await prefs.remove("email");
     await prefs.remove("displayName");
-
+    await prefs.clear();
     emit(AuthInitial());
   }
 
