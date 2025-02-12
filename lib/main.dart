@@ -23,7 +23,7 @@ void main() async{
       create: (context) {
         final authBloc = AuthBloc(authRepository: AuthRepository());
         if (isLoggedIn) {
-          authBloc.add(AutoLoginRequested());  // Auto-login event
+          authBloc.add(AutoLoginRequested());
         }
         return authBloc;
       },      child: MyApp(),
