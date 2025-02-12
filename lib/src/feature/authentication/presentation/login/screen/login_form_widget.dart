@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vortex/src/core/constants/size.dart';
+import 'package:vortex/src/feature/authentication/presentation/login/screen/widget/forgetpassword/forget-password-modal_bottom_sheet.dart';
 
 import '../../../../../core/constants/strings.dart';
 
@@ -38,7 +40,10 @@ class LoginForm extends StatelessWidget {
               SizedBox(height: 5,),
               Align(
                 alignment: Alignment.centerRight,
-                child: TextButton(onPressed: (){},
+                child: TextButton(
+                    onPressed: () {
+                  ForgetPasswordScreen.buildShowModalBottomSheet(context);
+                },
                     child: Text(
                       "Forget Password?",
                       style: TextStyle(color: Colors.red),)
@@ -55,4 +60,6 @@ class LoginForm extends StatelessWidget {
           ),
         ));
   }
+
+
 }

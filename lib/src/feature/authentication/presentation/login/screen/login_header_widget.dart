@@ -3,25 +3,40 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/image_strings.dart';
 
-class LoginHeaderWidget extends StatelessWidget {
-  const LoginHeaderWidget({
+class FormHeaderWidget extends StatelessWidget {
+  const FormHeaderWidget({
     super.key,
-    required this.size,
+    required this.title,
+    required this.subtitle,
+    required this.image,
+    this.crossAxisAlignment = CrossAxisAlignment.start,
+    this.heightBetween,
+    this.imageColor,
+    this.imageHeight = 0.2
   });
 
-  final Size size;
+  final String title, subtitle,image;
+  final CrossAxisAlignment crossAxisAlignment;
+  final Color?  imageColor;
+  final double imageHeight;
+  final double? heightBetween;
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Image(image: AssetImage(tWelcomeLogo), height: size.height * 0.2,),
-        SizedBox(height: 20,),
-        Text("Welcome Back", style: Theme.of(context).textTheme.headlineLarge,),
-        Text("Make it work, make it right, make it fast",
-          style: Theme.of(context).textTheme.bodySmall,)
+        Image(image: AssetImage(image), height: size.height * imageHeight,),
+        SizedBox(height: heightBetween,),
+        Text(title, style: Theme.of(context).textTheme.headlineLarge,),
+        Text(subtitle, style: Theme.of(context).textTheme.bodySmall,)
       ],
     );
   }
 }
+
+
+/*
+*  Text("Welcome Back", style: Theme.of(context).textTheme.headlineLarge,),
+        Text("Make it work, make it right, make it fast",*/

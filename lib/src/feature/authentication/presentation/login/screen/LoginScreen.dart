@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vortex/src/core/constants/image_strings.dart';
 import 'package:vortex/src/core/constants/size.dart';
 
 import 'login_footer_widget.dart';
@@ -19,7 +20,11 @@ class Loginscreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 60,),
-              LoginHeaderWidget(size: size),
+              FormHeaderWidget(
+                title: "Welcome Back",
+                subtitle: "Make it work, make it right, make it fast",
+                image: tWelcomeLogo,
+              ),
               const LoginForm(),
               LoginFooterWidget()
             ],

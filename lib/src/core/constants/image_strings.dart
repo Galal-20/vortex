@@ -7,3 +7,4 @@ const String tAnimation = "assets/animations/animation.json";
 const String tBackground = "assets/images/back.jpg";
 const String tCloud ="assets/images/cloud.jpg";
 const String tGoogleLogo = "assets/images/google_logo.png";
+const String tForget = "assets/images/forget.jpg";
