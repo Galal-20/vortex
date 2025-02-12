@@ -6,7 +6,8 @@ class AuthLoading extends AuthState {}
 
 class Authenticated extends AuthState {
   final String? displayName;
-  Authenticated({this.displayName});
+  final String? email;
+  Authenticated({this.displayName, this.email});
 }
 
 class AuthError extends AuthState {

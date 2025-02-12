@@ -112,9 +112,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: isLoading
-                        ? null
-                        : () {
+                    onPressed: isLoading ? null : () {
                       if (_formKey.currentState!.validate()) {
                         context.read<AuthBloc>().add(
                           SignUpRequested(

@@ -15,6 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignUpRequested>(_onSignUpRequested);
     on<LoginRequested>(_onLoginRequested);
     on<LogoutRequested>(_onLogoutRequested);
+    on<AutoLoginRequested>(_onAutoLoginRequested);
   }
 
   Future<void> _onSignUpRequested(
@@ -27,7 +28,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         phone: event.phone,
         password: event.password,
       );
-      emit(Authenticated(displayName: user?.displayName));
+
+      emit(Authenticated(
+        displayName: user?.displayName ?? event.fullName,
+        email: event.email,
+      ));
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }
@@ -41,7 +46,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: event.email,
         password: event.password,
       );
-      emit(Authenticated(displayName: user?.displayName));
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool("isLoggedIn", true);
+      await prefs.setString("email", event.email);
+      await prefs.setString("displayName", user?.displayName ?? "User");
+
+      emit(Authenticated(
+        displayName: user?.displayName ?? "User",
+        email: event.email,
+      ));
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }
@@ -51,7 +65,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       LogoutRequested event, Emitter<AuthState> emit) async {
     await _authRepository.logOut();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove("isLoggedIn"); // Clear login state
+    await prefs.remove("isLoggedIn");
+    await prefs.remove("email");
+    await prefs.remove("displayName");
+
     emit(AuthInitial());
+  }
+
+  Future<void> _onAutoLoginRequested(
+      AutoLoginRequested event, Emitter<AuthState> emit) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+    String? displayName = prefs.getString("displayName");
+
+    if (email != null) {
+      emit(Authenticated(displayName: displayName ?? "User", email: email));
+    } else {
+      emit(AuthInitial());
+    }
   }
 }

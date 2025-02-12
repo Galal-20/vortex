@@ -38,9 +38,9 @@ class _LoginFormState extends State<LoginForm> {
           );
         } else if (state is Authenticated) {
           _saveAuthState();
-          Navigator.of(context).pushAndRemoveUntil(
+          Navigator.pop(context);
+          Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => Homescreen()),
-                (route) => false, // This removes all previous routes from the stack
           );
         }
       },
@@ -88,7 +88,7 @@ class _LoginFormState extends State<LoginForm> {
                 child: ElevatedButton(
                   onPressed: isLoading ? null : () {
                     if (_formKey.currentState!.validate()) {
-                      setState(() => isLoading = true);
+                      //setState(() => isLoading = true);
                       context.read<AuthBloc>().add(LoginRequested(
                         email: email,
                         password: password,

@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vortex/src/feature/authentication/presentation/signUp/screen/SignUpScreen.dart';
 
 import '../../../../../core/constants/image_strings.dart';
 
@@ -32,7 +33,12 @@ class LoginFooterWidget extends StatelessWidget {
         ),
         const SizedBox(height: 20,),
         TextButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pop(context);
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context) => SignUpScreen())
+              );
+            },
             child: Text.rich(
                 TextSpan(
                     text: "Don't have an Account? ",
