@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vortex/src/feature/splash_screen/domain/SplashUseCase.dart';
 import 'package:vortex/src/feature/splash_screen/presentation/bloc/SplashBloc.dart';
 import 'package:vortex/src/feature/splash_screen/presentation/bloc/SplashState.dart';
@@ -12,6 +13,12 @@ import '../bloc/SplashEvent.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
+
+
+  Future<bool> _isUserLoggedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("isLoggedIn") ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
