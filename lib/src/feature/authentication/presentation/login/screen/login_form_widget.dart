@@ -39,7 +39,7 @@ class _LoginFormState extends State<LoginForm> {
         } else if (state is Authenticated) {
           _saveAuthState();
           Navigator.pop(context);
-          Navigator.of(context).pushReplacement(
+          Navigator.of(context, rootNavigator: true).pushReplacement(
             MaterialPageRoute(builder: (context) => Homescreen()),
           );
         }

@@ -52,7 +52,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
           } else if (state is Authenticated) {
             _saveAuthState();
             Navigator.pop(context);
-            Navigator.of(context).pushReplacement(
+            Navigator.of(context, rootNavigator: true).pushReplacement(
               MaterialPageRoute(builder: (context) => Homescreen()),
             );
           }
