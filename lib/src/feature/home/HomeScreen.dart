@@ -15,14 +15,14 @@ class Homescreen extends StatelessWidget {
       listener: (context, state) {
         if (state is AuthInitial) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pushAndRemoveUntil(
+            Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => Loginscreen()),
                   (route) => false,
             );
           });
         } else if (state is Authenticated) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pushAndRemoveUntil(
+            Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => Homescreen()),
                   (route) => false,
             );
