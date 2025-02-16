@@ -31,18 +31,21 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthError) {
-          setState(() => isLoading = false);
+      if (state is AuthLoading) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => Center(child: CircularProgressIndicator()),
+        );
+      }else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
           );
         } else if (state is Authenticated) {
-          _saveAuthState();
           Navigator.pop(context);
-          Navigator.of(context, rootNavigator: true).pushReplacement(
-            MaterialPageRoute(builder: (context) => Homescreen()),
-          );
-        }
+          _saveAuthState();
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Homescreen()));
+      }
       },
       child: Form(
         key: _formKey,

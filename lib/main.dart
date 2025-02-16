@@ -24,7 +24,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         RepositoryProvider(
-          create: (context) => WeatherRepositoryImpl(), // ✅ Use the concrete implementation
+          create: (context) => WeatherRepositoryImpl(),
         ),
         BlocProvider(
           create: (context) {
@@ -36,7 +36,7 @@ void main() async {
           },
         ),
         BlocProvider(
-          create: (context) => WeatherBloc(GetWeatherUseCase(context.read<WeatherRepositoryImpl>())), // ✅ Use WeatherRepositoryImpl
+          create: (context) => WeatherBloc(GetWeatherUseCase(context.read<WeatherRepositoryImpl>())),
         ),
         BlocProvider(
           create: (context) => SplashBloc(splashUseCase: Splashusecase()),

@@ -29,32 +29,21 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc,AuthState>(
         listener: (context, state){
-         /* if (state is AuthLoading) {
+          if (state is AuthLoading) {
             showDialog(
               context: context,
               barrierDismissible: false,
               builder: (context) => Center(child: CircularProgressIndicator()),
             );
           } else if (state is AuthError) {
-            Navigator.pop(context); // Remove loading
+            Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
           } else if (state is Authenticated) {
-            Navigator.pop(context); // Remove loading
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Homescreen()));
-          }*/
-          setState(() => isLoading = state is AuthLoading);
-
-          if (state is AuthError) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.message)));
-          } else if (state is Authenticated) {
             _saveAuthState();
             Navigator.pop(context);
-            Navigator.of(context, rootNavigator: true).pushReplacement(
-              MaterialPageRoute(builder: (context) => Homescreen()),
-            );
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Homescreen()));
           }
         },
       child: Form(
