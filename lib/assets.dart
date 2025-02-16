@@ -1,8 +1,12 @@
 class Assets {
 
-  static const AssetsImagesBack = 'assets/images/back.jpg';
+  static const AssetsImagesRain = 'assets/images/rain.jpg';
+
+  static const AssetsImagesSnow = 'assets/images/snow.jpg';
 
   static const AssetsImagesCloud = 'assets/images/cloud.jpg';
+
+  static const AssetsImagesSunny = 'assets/images/sunny.jpg';
 
   static const AssetsImagesCloudy = 'assets/images/cloudy.png';
 
