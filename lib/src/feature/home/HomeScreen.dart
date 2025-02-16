@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:vortex/src/core/constants/strings.dart';
 import 'package:vortex/src/feature/authentication/presentation/login/screen/LoginScreen.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherBloc.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherEvent.dart';
@@ -23,7 +24,7 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
-  String locationText = "Fetching location...";
+  String locationText = tFetch;
   Timer? _locationTimer;
   Timer? _clockTimer;
   var nameDay= DateFormat('EEEE').format(DateTime.now());
