@@ -12,6 +12,7 @@ import 'package:vortex/src/feature/home/presentation/bloc/WeatherEvent.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherState.dart';
 import 'package:vortex/src/feature/home/presentation/location-widget.dart';
 
+import '../../core/constants/image_strings.dart';
 import '../authentication/presentation/AuthBloc.dart';
 import '../authentication/presentation/AuthEvent.dart';
 import '../authentication/presentation/AuthState.dart';
@@ -64,7 +65,7 @@ class _HomescreenState extends State<Homescreen> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       setState(() {
-        locationText = "Location services are disabled.";
+        locationText = tErrorSer;
       });
       return;
     }
@@ -74,7 +75,7 @@ class _HomescreenState extends State<Homescreen> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         setState(() {
-          locationText = "Location permissions are denied.";
+          locationText = tLPD;
         });
         return;
       }
@@ -82,7 +83,7 @@ class _HomescreenState extends State<Homescreen> {
 
     if (permission == LocationPermission.deniedForever) {
       setState(() {
-        locationText = "Location permissions are permanently denied.";
+        locationText = tLPPD;
       });
       return;
     }
@@ -118,38 +119,36 @@ class _HomescreenState extends State<Homescreen> {
       }
     } catch (e) {
       setState(() {
-        locationText = "Error fetching location.";
+        locationText = tErrorF;
       });
     }
   }
 
   String _getBackgroundImage(String description) {
     switch (description) {
-      case "overcast clouds":
-      case "broken clouds":
-      case "scattered clouds":
-      case "few clouds":
-      case "mist":
-        return "assets/images/cloud.jpg";
-      case "Clear":
-      case "Sunny":
-      case "clear sky":
-        return "assets/images/sunny.jpg";
-      case "Heavy Rain":
-      case "Rain":
-      case "Showers":
-      case "Drizzle":
-      case "moderate rain":
-      case "light rain":
-        return "assets/images/rain.jpg";
-      case "heavy snow":
-      case "shower snow":
-      case "shower sleet":
-      case "light shower sleet":
-      case "light snow":
-        return "assets/images/snow.jpg";
+      case overcast_clouds:
+      case broken_clouds:
+      case scattered_clouds:
+      case few_clouds:
+      case mist:
+        return cloudImage;
+      case clear:
+      case sunny:
+      case clear_sky:
+        return sunnyImage;
+      case heavy_rain:
+      case rain:
+      case showers:
+      case moderate_rain:
+      case light_rain:
+        return rainImage;
+      case heavy_snow:
+      case shower_snow:
+      case shower_sleet:
+      case light_snow:
+        return snowImage;
       default:
-        return "assets/images/sunny.jpg";
+        return sunnyImage;
     }
   }
 
@@ -269,36 +268,43 @@ class _HomescreenState extends State<Homescreen> {
                                                 children: [
                                                   Image(
                                                       image: AssetImage
-                                                        ("assets/images/ws.png"),
+                                                        (ws),
                                                     width: 60,
                                                     height: 60,
                                                   ),
                                                   SizedBox(width: 10,),
-                                                  Text("Wind Speed:\n${weatherState.weather.windSpeed} m/s", style: TextStyle(fontSize: 16)),
+                                                  Text("Wind Speed:\n${weatherState.weather.windSpeed} m/s",
+                                                      style: TextStyle
+                                                        (fontSize: 16,
+                                                          fontWeight: FontWeight.bold)),
                                                 ],
                                               ),
                                               Column(
                                                 children: [
                                                   Image(
                                                       image: AssetImage
-                                                        ("assets/images/humidity.png"),
+                                                        (humidity),
                                                     width: 60,
                                                     height: 60,
                                                   ),
                                                   SizedBox(width: 10,),
-                                                  Text("Humidity:\n${weatherState.weather.windSpeed}%", style: TextStyle(fontSize: 16)),
+                                                  Text("Humidity:\n${weatherState.weather.windSpeed}%",
+                                                      style: TextStyle
+                                                        (fontSize: 16,fontWeight: FontWeight.bold)),
                                                 ],
                                               ),
                                               Column(
                                                 children: [
                                                   Image(
                                                       image: AssetImage
-                                                        ("assets/images/co.png"),
+                                                        (co),
                                                     width: 60,
                                                     height: 60,
                                                   ),
                                                   SizedBox(width: 10,),
-                                                  Text("Clouds:\n${weatherState.weather.windSpeed}%", style: TextStyle(fontSize: 16)),
+                                                  Text("Clouds:\n${weatherState.weather.windSpeed}%",
+                                                      style: TextStyle
+                                                        (fontSize: 16, fontWeight: FontWeight.bold)),
                                                 ],
                                               ),
                                             ],
@@ -314,47 +320,45 @@ class _HomescreenState extends State<Homescreen> {
                                                 children: [
                                                   Image(
                                                       image: AssetImage
-                                                        ("assets/images/sea.png"),
+                                                        (sea),
                                                     width: 60,
                                                     height: 60,
                                                   ),
                                                   SizedBox(width: 10,),
-                                                  Text("Sea:\n${weatherState.weather.windSpeed}hPa", style: TextStyle(fontSize: 16)),
+                                                  Text("Sea:\n${weatherState.weather.windSpeed}hPa",
+                                                      style: TextStyle
+                                                        (fontSize: 16, fontWeight: FontWeight.bold)),
                                                 ],
                                               ),
                                               Column(
                                                 children: [
                                                   Image(
                                                       image: AssetImage
-                                                        ("assets/images/sunrise.png"),
+                                                        (sunrise),
                                                     width: 60,
                                                     height: 60,
                                                   ),
                                                   SizedBox(width: 10,),
                                                   Text(
                                                       "Sunrise:\n${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunrise * 1000))}",
-                                                      style: TextStyle(fontSize: 16)),
+                                                      style: TextStyle
+                                                        (fontSize: 16, fontWeight: FontWeight.bold)),
                                                 ],
                                               ),
                                               Column(
                                                 children: [
                                                   Image(
                                                       image: AssetImage
-                                                        ("assets/images/sunset.png"),
+                                                        (sunset),
                                                     width: 60,
                                                     height: 60,
                                                   ),
                                                   SizedBox(width: 10,),
-                                                  Text("Sunset:\n${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunset * 1000))}", style: TextStyle(fontSize: 16))
+                                                  Text("Sunset:\n${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunset * 1000))}",
+                                                      style: TextStyle
+                                                        (fontSize: 16, fontWeight: FontWeight.bold))
                                                 ],
                                               ),
-
-
-                                              /*Text("Humidity: ${weatherState.weather.humidity}%", style: TextStyle(fontSize: 16)),
-                                              Text("Clouds: ${weatherState.weather.clouds}%", style: TextStyle(fontSize: 16)),
-                                              Text("Sea Level: ${weatherState.weather.seaLevel} hPa", style: TextStyle(fontSize: 16)),
-                                              Text("Sunrise: ${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunrise * 1000))}", style: TextStyle(fontSize: 16)),
-                                              Text("Sunset: ${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunset * 1000))}", style: TextStyle(fontSize: 16)),*/
                                             ],
                                           ),
                                       ),
@@ -362,9 +366,9 @@ class _HomescreenState extends State<Homescreen> {
                                   );
 
                                 } else if (weatherState is WeatherError) {
-                                  return Center(child: Text("Failed to load weather data: ${weatherState.message}"));
+                                  return Center(child: Text(fLoad + weatherState.message));
                                 }
-                                return Text("Fetching weather data...");
+                                return Text(fDw);
                               },
                             ),
 
@@ -375,7 +379,7 @@ class _HomescreenState extends State<Homescreen> {
                       } else if (state is AuthError) {
                         return Text("Error: ${state.message}");
                       }
-                      return Text("Not authenticated");
+                      return Text(not_authenticated);
                     },
                   ),
                 ],
