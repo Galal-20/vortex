@@ -122,7 +122,6 @@ class _HomescreenState extends State<Homescreen> {
     }
   }
 
-  // Function to determine background image based on weather description
   String _getBackgroundImage(String description) {
     switch (description) {
       case "overcast clouds":
@@ -252,26 +251,111 @@ class _HomescreenState extends State<Homescreen> {
                                               Text(weatherState.weather.description, style: TextStyle(fontSize: 16)),
                                               Text("${weatherState.weather.temperature} °C", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                                               Text("${weatherState.weather.minTemperature} °C / ${weatherState.weather.maxTemperature} °C",
-                                                style: TextStyle(fontSize: 14, color: Colors.grey),
+                                                style: TextStyle(fontSize: 14, color: Colors.black),
                                               ),
                                             ],
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 20),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                      SizedBox(height: 300),
+                                      Padding(padding: EdgeInsets.symmetric
+                                        (horizontal: 16.0, vertical: 10),
+                                        child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Text("Wind Speed: ${weatherState.weather.windSpeed} m/s", style: TextStyle(fontSize: 16)),
-                                            Text("Humidity: ${weatherState.weather.humidity}%", style: TextStyle(fontSize: 16)),
-                                            Text("Clouds: ${weatherState.weather.clouds}%", style: TextStyle(fontSize: 16)),
-                                            Text("Sea Level: ${weatherState.weather.seaLevel} hPa", style: TextStyle(fontSize: 16)),
-                                            Text("Sunrise: ${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunrise * 1000))}", style: TextStyle(fontSize: 16)),
-                                            Text("Sunset: ${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunset * 1000))}", style: TextStyle(fontSize: 16)),
-                                          ],
-                                        ),
+                                              Column(
+                                                children: [
+                                                  Image(
+                                                      image: AssetImage
+                                                        ("assets/images/ws.png"),
+                                                    width: 60,
+                                                    height: 60,
+                                                  ),
+                                                  SizedBox(width: 10,),
+                                                  Text("Wind Speed:\n${weatherState.weather.windSpeed} m/s", style: TextStyle(fontSize: 16)),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Image(
+                                                      image: AssetImage
+                                                        ("assets/images/humidity.png"),
+                                                    width: 60,
+                                                    height: 60,
+                                                  ),
+                                                  SizedBox(width: 10,),
+                                                  Text("Humidity:\n${weatherState.weather.windSpeed}%", style: TextStyle(fontSize: 16)),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Image(
+                                                      image: AssetImage
+                                                        ("assets/images/co.png"),
+                                                    width: 60,
+                                                    height: 60,
+                                                  ),
+                                                  SizedBox(width: 10,),
+                                                  Text("Clouds:\n${weatherState.weather.windSpeed}%", style: TextStyle(fontSize: 16)),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                      ),
+                                      Padding(padding: EdgeInsets.symmetric
+                                        (horizontal: 16.0, vertical: 20),
+                                        child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                              Column(
+                                                children: [
+                                                  Image(
+                                                      image: AssetImage
+                                                        ("assets/images/sea.png"),
+                                                    width: 60,
+                                                    height: 60,
+                                                  ),
+                                                  SizedBox(width: 10,),
+                                                  Text("Sea:\n${weatherState.weather.windSpeed}hPa", style: TextStyle(fontSize: 16)),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Image(
+                                                      image: AssetImage
+                                                        ("assets/images/sunrise.png"),
+                                                    width: 60,
+                                                    height: 60,
+                                                  ),
+                                                  SizedBox(width: 10,),
+                                                  Text(
+                                                      "Sunrise:\n${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunrise * 1000))}",
+                                                      style: TextStyle(fontSize: 16)),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Image(
+                                                      image: AssetImage
+                                                        ("assets/images/sunset.png"),
+                                                    width: 60,
+                                                    height: 60,
+                                                  ),
+                                                  SizedBox(width: 10,),
+                                                  Text("Sunset:\n${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunset * 1000))}", style: TextStyle(fontSize: 16))
+                                                ],
+                                              ),
+
+
+                                              /*Text("Humidity: ${weatherState.weather.humidity}%", style: TextStyle(fontSize: 16)),
+                                              Text("Clouds: ${weatherState.weather.clouds}%", style: TextStyle(fontSize: 16)),
+                                              Text("Sea Level: ${weatherState.weather.seaLevel} hPa", style: TextStyle(fontSize: 16)),
+                                              Text("Sunrise: ${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunrise * 1000))}", style: TextStyle(fontSize: 16)),
+                                              Text("Sunset: ${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunset * 1000))}", style: TextStyle(fontSize: 16)),*/
+                                            ],
+                                          ),
                                       ),
                                     ],
                                   );

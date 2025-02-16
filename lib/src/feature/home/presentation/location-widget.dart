@@ -18,9 +18,11 @@ class LocationWidget extends StatelessWidget {
       children: [
         Icon(Icons.location_on_sharp, size: 19,),
         SizedBox(width: 2),
-        Text("$locationText",
-            style: TextStyle(fontSize: 14, color: Colors
-                .blue)),
+        Text(locationText,
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black)),
         SizedBox(width: 10),
       ],
     );
