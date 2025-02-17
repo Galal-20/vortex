@@ -12,6 +12,7 @@ import 'package:vortex/src/feature/home/presentation/bloc/WeatherBloc.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherEvent.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherState.dart';
 import 'package:vortex/src/feature/home/presentation/location-widget.dart';
+import 'package:vortex/src/feature/home/presentation/screen/daily_weather_card_widget.dart';
 import 'package:vortex/src/feature/welcome_screen/presentation/screen/welcome_screen.dart';
 
 import '../../core/constants/image_strings.dart';
@@ -133,10 +134,15 @@ class _HomescreenState extends State<Homescreen> {
       case scattered_clouds:
       case few_clouds:
       case mist:
+      case "fog":
+      case "Foggy":
+      case "Overcast":
+      case "Partly Clouds":
         return cloudImage;
       case clear:
       case sunny:
       case clear_sky:
+      case "Clear Sky":
         return sunnyImage;
       case heavy_rain:
       case rain:
@@ -148,6 +154,7 @@ class _HomescreenState extends State<Homescreen> {
       case shower_snow:
       case shower_sleet:
       case light_snow:
+      case "Snow":
         return snowImage;
       default:
         return sunnyImage;
@@ -247,7 +254,6 @@ class _HomescreenState extends State<Homescreen> {
                                               Text(time, style: TextStyle(fontSize: 14)),
                                             ],
                                           ),
-
                                           Column(
                                             children: [
                                               Text(weatherState.weather.description, style: TextStyle(fontSize: 16)),
@@ -259,111 +265,149 @@ class _HomescreenState extends State<Homescreen> {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 300),
-                                      Padding(padding: EdgeInsets.symmetric
-                                        (horizontal: 16.0, vertical: 10),
-                                        child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                              Column(
-                                                children: [
-                                                  Image(
-                                                      image: AssetImage
-                                                        (ws),
-                                                    width: 60,
-                                                    height: 60,
-                                                  ),
-                                                  SizedBox(width: 10,),
-                                                  Text("Wind Speed:\n${weatherState.weather.windSpeed} m/s",
-                                                      style: TextStyle
-                                                        (fontSize: 16,
-                                                          fontWeight: FontWeight.bold)),
-                                                ],
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Image(
-                                                      image: AssetImage
-                                                        (humidity),
-                                                    width: 60,
-                                                    height: 60,
-                                                  ),
-                                                  SizedBox(width: 10,),
-                                                  Text("Humidity:\n${weatherState.weather.windSpeed}%",
-                                                      style: TextStyle
-                                                        (fontSize: 16,fontWeight: FontWeight.bold)),
-                                                ],
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Image(
-                                                      image: AssetImage
-                                                        (co),
-                                                    width: 60,
-                                                    height: 60,
-                                                  ),
-                                                  SizedBox(width: 10,),
-                                                  Text("Clouds:\n${weatherState.weather.windSpeed}%",
-                                                      style: TextStyle
-                                                        (fontSize: 16, fontWeight: FontWeight.bold)),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
+                                      SizedBox(height: 30,),
+                                      // Daily forecast weather for 7 days:
+                                      SizedBox(
+                                        height: 200, // Adjust height as needed
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: weatherState.weather.dailyForecast.length -1,
+                                          itemBuilder: (context, index) {
+                                            final daily = weatherState
+                                                .weather.dailyForecast[index +1];
+                                            return DailyWeatherCard(
+                                              day: DateFormat('EEE').format(DateTime.fromMillisecondsSinceEpoch(daily.date * 1000)),
+                                              weatherDescription: daily.description,
+                                              maxTemp: daily.maxTemp.toString(),
+                                              minTemp: daily.minTemp.toString(),
+                                              iconUrl: "https://openweathermap.org/img/wn/${daily.icon}@2x.png",
+                                            );
+                                          },
+                                        ),
                                       ),
-                                      Padding(padding: EdgeInsets.symmetric
-                                        (horizontal: 16.0, vertical: 20),
-                                        child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      // Current weather data footer:
+                                      SizedBox(height: 50),
+                                      Container(
+                                        margin: EdgeInsets.symmetric
+                                          (horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.2),
+                                          borderRadius: BorderRadius.circular(16),
+                                          border: Border.all(color: Colors.black,width: 2),
+                                        ),
+                                        child: Column(
                                           children: [
-                                              Column(
+                                            Padding(padding: EdgeInsets.symmetric
+                                              (vertical: 10),
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
                                                 children: [
-                                                  Image(
-                                                      image: AssetImage
-                                                        (sea),
-                                                    width: 60,
-                                                    height: 60,
+                                                  Column(
+                                                    children: [
+                                                      Image(
+                                                        image: AssetImage
+                                                          (ws),
+                                                        width: 60,
+                                                        height: 60,
+                                                      ),
+                                                      SizedBox(width: 10,),
+                                                      Text("Wind Speed:\n${weatherState.weather.windSpeed} m/s",
+                                                          style: TextStyle
+                                                            (fontSize: 16,
+                                                              fontWeight: FontWeight.bold)),
+                                                    ],
                                                   ),
-                                                  SizedBox(width: 10,),
-                                                  Text("Sea:\n${weatherState.weather.windSpeed}hPa",
-                                                      style: TextStyle
-                                                        (fontSize: 16, fontWeight: FontWeight.bold)),
+                                                  Column(
+                                                    children: [
+                                                      Image(
+                                                        image: AssetImage
+                                                          (humidity),
+                                                        width: 60,
+                                                        height: 60,
+                                                      ),
+                                                      SizedBox(width: 10,),
+                                                      Text("Humidity:\n${weatherState.weather.windSpeed}%",
+                                                          style: TextStyle
+                                                            (fontSize: 16,fontWeight: FontWeight.bold)),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Image(
+                                                        image: AssetImage
+                                                          (co),
+                                                        width: 60,
+                                                        height: 60,
+                                                      ),
+                                                      SizedBox(width: 10,),
+                                                      Text("Clouds:\n${weatherState.weather.windSpeed}%",
+                                                          style: TextStyle
+                                                            (fontSize: 16, fontWeight: FontWeight.bold)),
+                                                    ],
+                                                  ),
                                                 ],
                                               ),
-                                              Column(
+                                            ),
+                                            Padding(padding: EdgeInsets.symmetric
+                                              (vertical: 20),
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
                                                 children: [
-                                                  Image(
-                                                      image: AssetImage
-                                                        (sunrise),
-                                                    width: 60,
-                                                    height: 60,
+                                                  Column(
+                                                    children: [
+                                                      Image(
+                                                        image: AssetImage
+                                                          (sea),
+                                                        width: 60,
+                                                        height: 60,
+                                                      ),
+                                                      SizedBox(width: 10,),
+                                                      Text("Sea:\n${weatherState.weather.windSpeed}hPa",
+                                                          style: TextStyle
+                                                            (fontSize: 16, fontWeight: FontWeight.bold)),
+                                                    ],
                                                   ),
-                                                  SizedBox(width: 10,),
-                                                  Text(
-                                                      "Sunrise:\n${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunrise * 1000))}",
-                                                      style: TextStyle
-                                                        (fontSize: 16, fontWeight: FontWeight.bold)),
+                                                  Column(
+                                                    children: [
+                                                      Image(
+                                                        image: AssetImage
+                                                          (sunrise),
+                                                        width: 60,
+                                                        height: 60,
+                                                      ),
+                                                      SizedBox(width: 10,),
+                                                      Text(
+                                                          "Sunrise:\n${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunrise * 1000))}",
+                                                          style: TextStyle
+                                                            (fontSize: 16, fontWeight: FontWeight.bold)),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Image(
+                                                        image: AssetImage
+                                                          (sunset),
+                                                        width: 60,
+                                                        height: 60,
+                                                      ),
+                                                      SizedBox(width: 10,),
+                                                      Text("Sunset:\n${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunset * 1000))}",
+                                                          style: TextStyle
+                                                            (fontSize: 16, fontWeight: FontWeight.bold))
+                                                    ],
+                                                  ),
                                                 ],
                                               ),
-                                              Column(
-                                                children: [
-                                                  Image(
-                                                      image: AssetImage
-                                                        (sunset),
-                                                    width: 60,
-                                                    height: 60,
-                                                  ),
-                                                  SizedBox(width: 10,),
-                                                  Text("Sunset:\n${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunset * 1000))}",
-                                                      style: TextStyle
-                                                        (fontSize: 16, fontWeight: FontWeight.bold))
-                                                ],
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
+                                        ) ,
                                       ),
+
+
                                     ],
                                   );
 
@@ -373,7 +417,6 @@ class _HomescreenState extends State<Homescreen> {
                                 return Text(fDw);
                               },
                             ),
-
                           ],
                         );
                       }
@@ -397,7 +440,6 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 }
-
 
 
 

@@ -1,5 +1,6 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vortex/src/feature/home/domain/entities/WeatherEntity.dart';
 
 import '../../domain/UseCase/GetWeatherUseCase.dart';
 import 'WeatherEvent.dart';
