@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vortex/src/feature/authentication/presentation/AuthBloc.dart';
 import 'package:vortex/src/feature/authentication/presentation/AuthEvent.dart';
 import 'package:vortex/src/feature/authentication/presentation/AuthState.dart';
-import 'package:vortex/src/feature/home/HomeScreen.dart';
+import 'package:vortex/src/feature/authentication/presentation/login/screen/LoginScreen.dart';
 
 class SignUpFormWidget extends StatefulWidget {
   const SignUpFormWidget({
@@ -20,10 +19,6 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
   String fullName =" ", email =" ", phone =" ", password =" " ;
   bool isLoading = false;
 
-  void _saveAuthState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("isLoggedIn", true);
-  }
   
   @override
   Widget build(BuildContext context) {
@@ -35,16 +30,41 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               barrierDismissible: false,
               builder: (context) => Center(child: CircularProgressIndicator()),
             );
-          } else if (state is AuthError) {
+          }
+          else if (state is AuthError) {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
-          } else if (state is Authenticated) {
-            _saveAuthState();
-            Navigator.pop(context);
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Homescreen()));
           }
+          else if (state is Authenticated) {
+            context.read<AuthBloc>().emit(AuthInitial());
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => Center(
+                  child:
+                  AlertDialog(
+                    title: Text("Congratulation", style: TextStyle(color: Colors
+                        .black),),
+                    content: Text("Sign Up successfully, Let's go to login."),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => Loginscreen()),
+                                (Route<dynamic> route) => false,
+                          );
+                        },
+                        child: Text("Login"),
+                      ),
+                    ],
+                  )
+              ),
+            );
+          }
+
         },
       child: Form(
         key: _formKey,
@@ -70,8 +90,6 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                     labelText: "E-mail",
                     hintText: "Email",
                     border: OutlineInputBorder(),
-                    /*suffixIcon: IconButton(onPressed: null,
-                          icon: Icon(Icons.remove_red_eye))*/
                   ),
                 ),
                 SizedBox(height: 20,),

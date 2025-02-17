@@ -7,6 +7,7 @@ import 'package:vortex/src/feature/authentication/presentation/AuthState.dart';
 import 'package:vortex/src/feature/authentication/presentation/login/screen/widget/forgetpassword/forget-password-modal_bottom_sheet.dart';
 import 'package:vortex/src/feature/home/HomeScreen.dart';
 
+import '../../../../../core/constants/image_strings.dart';
 import '../../../../../core/constants/strings.dart';
 import '../../AuthEvent.dart';
 
@@ -31,21 +32,25 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-      if (state is AuthLoading) {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => Center(child: CircularProgressIndicator()),
-        );
-      }else if (state is AuthError) {
+        if (state is AuthLoading) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => Center(child: CircularProgressIndicator()),
+          );
+        } else if (state is AuthError) {
+          Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
           );
         } else if (state is Authenticated) {
-          Navigator.pop(context);
           _saveAuthState();
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Homescreen()));
-      }
+          Navigator.pop(context);
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => Homescreen()),
+                (Route<dynamic> route) => false,
+          );
+        }
       },
       child: Form(
         key: _formKey,

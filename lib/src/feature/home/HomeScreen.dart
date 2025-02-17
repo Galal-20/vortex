@@ -7,10 +7,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:vortex/src/core/constants/strings.dart';
 import 'package:vortex/src/feature/authentication/presentation/login/screen/LoginScreen.dart';
+import 'package:vortex/src/feature/authentication/presentation/signUp/screen/SignUpScreen.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherBloc.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherEvent.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherState.dart';
 import 'package:vortex/src/feature/home/presentation/location-widget.dart';
+import 'package:vortex/src/feature/welcome_screen/presentation/screen/welcome_screen.dart';
 
 import '../../core/constants/image_strings.dart';
 import '../authentication/presentation/AuthBloc.dart';
@@ -156,10 +158,10 @@ class _HomescreenState extends State<Homescreen> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthInitial) {
+        if (state is AuthInitial || state is Unauthenticated) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => Loginscreen()),
+              MaterialPageRoute(builder: (context) => WelcomeScreen()),
                   (route) => false,
             );
           });
@@ -374,10 +376,13 @@ class _HomescreenState extends State<Homescreen> {
 
                           ],
                         );
-                      } else if (state is AuthLoading) {
+                      }
+                      else if (state is AuthLoading) {
                         return CircularProgressIndicator();
                       } else if (state is AuthError) {
                         return Text("Error: ${state.message}");
+                      }else if(state is Unauthenticated){
+                        return Text(not_authenticated);
                       }
                       return Text(not_authenticated);
                     },

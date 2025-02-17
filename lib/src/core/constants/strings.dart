@@ -27,6 +27,6 @@ const  heavy_snow= "heavy snow";
 const  shower_snow= "shower snow";
 const shower_sleet = "shower sleet";
 const light_snow = "light snow";
-const not_authenticated = "Not authenticated";
+const not_authenticated = "Not authenticated, Please log in to continue";
 const fDw = "Fetching weather data...";
 const fLoad = "Failed to load weather data:";

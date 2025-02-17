@@ -23,9 +23,7 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        RepositoryProvider(
-          create: (context) => WeatherRepositoryImpl(),
-        ),
+        RepositoryProvider(create: (context) => WeatherRepositoryImpl(),),
         BlocProvider(
           create: (context) {
             final authBloc = AuthBloc(authRepository: AuthRepository());

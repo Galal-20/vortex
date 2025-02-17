@@ -29,17 +29,14 @@ class SplashScreen extends StatelessWidget {
       child: BlocListener<SplashBloc, SplashState>(
         listener: (context, state) async {
           if (state is SplashFadingOut) {
-            bool isLoggedIn = await _isUserLoggedIn();
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            bool isLoggedIn = prefs.getBool("isLoggedIn") ?? false;
             Navigator.of(context).pushReplacement(
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
                 isLoggedIn ? const Homescreen() : const WelcomeScreen(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
                 },
                 transitionDuration: const Duration(milliseconds: 1000),
               ),

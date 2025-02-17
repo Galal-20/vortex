@@ -18,3 +18,4 @@ const sea = "assets/images/sea.png";
 const co ="assets/images/co.png";
 const humidity ="assets/images/humidity.png";
 const ws = "assets/images/ws.png";
+const warning = "assets/images/warning.png";
