@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vortex/src/core/utils/validations.dart';
 import 'package:vortex/src/feature/authentication/presentation/AuthBloc.dart';
 import 'package:vortex/src/feature/authentication/presentation/AuthEvent.dart';
 import 'package:vortex/src/feature/authentication/presentation/AuthState.dart';
 import 'package:vortex/src/feature/authentication/presentation/login/screen/LoginScreen.dart';
+
+import '../../text_form_field.dart';
 
 class SignUpFormWidget extends StatefulWidget {
   const SignUpFormWidget({
@@ -18,8 +21,10 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
   final _formKey = GlobalKey<FormState>();
   String fullName =" ", email =" ", phone =" ", password =" " ;
   bool isLoading = false;
+  bool _isPasswordHidden = true;
 
-  
+
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc,AuthState>(
@@ -64,7 +69,6 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               ),
             );
           }
-
         },
       child: Form(
         key: _formKey,
@@ -73,46 +77,81 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextFormField(
-                  onChanged: (value) =>fullName = value,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.person_outline_outlined),
-                      labelText: "Full Name ",
-                      hintText: "Full Name",
-                      border: OutlineInputBorder()
-                  ),
+                // full name
+                TextFieldClass.buildTextFormField(
+                  "Full Name",
+                  "Full Name",
+                    (value){
+                      if(value == null || value.trim().isEmpty){
+                        return "Full name is required";
+                      } else if (value.trim().length < 3) {
+                        return "Full Name must be at least 3 characters";
+                      }
+                      return null;
+                    },
+                      (value) => fullName = value,
+                  Icon(Icons.person_outline_outlined),
                 ),
                 SizedBox(height: 20,),
-                TextFormField(
-                  onChanged: (value) => email = value,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.fingerprint),
-                    labelText: "E-mail",
-                    hintText: "Email",
-                    border: OutlineInputBorder(),
-                  ),
+                // Email
+                TextFieldClass.buildTextFormField(
+                  "Email",
+                  "Enter your email",
+                      (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "Email is required";
+                    } else if (!Validation.isValidateEmail(value)) {
+                      return "Enter a valid email address";
+                    }
+                    return null;
+                  },
+                    (value) => email = value,
+                    Icon(Icons.mail_outline_rounded)
                 ),
                 SizedBox(height: 20,),
-                TextFormField(
-                  onChanged: (value) => phone = value,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.numbers_outlined),
-                      labelText: "Phone Number ",
-                      hintText: "Phone Number",
-                      border: OutlineInputBorder()
-                  ),
+                // Phone Number
+                TextFieldClass.buildTextFormField(
+                    "Phone Number",
+                    "Phone Number",
+                        (value){
+                      if (value == null || value.trim().isEmpty) {
+                        return "Phone number is required";
+                      } else if (!Validation.isValidPhone(value)) {
+                        return "Enter a valid phone number (11 digits)";
+                      }
+                      return null;
+                    },
+                        (value) => phone = value,
+                    Icon(Icons.phone)
                 ),
                 SizedBox(height: 20,),
-                TextFormField(
-                  onChanged: (value) => password = value,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.fingerprint),
-                      labelText: "Password",
-                      hintText: "Password",
-                      border: OutlineInputBorder(),
-                      suffixIcon: IconButton(onPressed: null,
-                          icon: Icon(Icons.remove_red_eye))
+                // password
+                TextFieldClass.buildTextFormField(
+                    "Password", 
+                    "Password",
+                        (value){
+                          if (value == null || value.trim().isEmpty) {
+                            return "Password is required";
+                          } else if (value.length < 6) {
+                            return "Password must be at least 6 characters";
+                          } else if (!Validation.isValidatePassword(value)) {
+                            return "Password must contain uppercase, lowercase, number, and special character";
+                          }
+                          return null;
+                    },
+                        (value) => password = value,
+                  Icon(Icons.fingerprint),
+                  suffixIcon:
+                  IconButton(
+                      onPressed: ()
+                      {
+                        setState(() {
+                          _isPasswordHidden = !_isPasswordHidden;
+                        });
+                      },
+                      icon: Icon(_isPasswordHidden ? Icons.visibility_off : Icons.visibility)
                   ),
+                  obscureText: _isPasswordHidden
                 ),
                 SizedBox(height: 20,),
                 SizedBox(
