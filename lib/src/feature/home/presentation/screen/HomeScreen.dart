@@ -1,13 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:vortex/src/core/constants/strings.dart';
-import 'package:vortex/src/feature/authentication/presentation/login/screen/LoginScreen.dart';
-import 'package:vortex/src/feature/authentication/presentation/signUp/screen/SignUpScreen.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherBloc.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherEvent.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherState.dart';
@@ -101,14 +98,6 @@ class _HomescreenState extends State<Homescreen> {
 
     context.read<WeatherBloc>().add(FetchWeather(position.latitude, position.longitude));
 
-    /* Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 100, // Update if user moves 100 meters
-      ),
-    ).listen((Position position) {
-      _getAddressFromCoordinates(position.latitude, position.longitude);
-    });*/
   }
 
   Future<void> _getAddressFromCoordinates(double lat, double lng) async {
@@ -181,7 +170,8 @@ class _HomescreenState extends State<Homescreen> {
             backgroundImage = _getBackgroundImage(weatherState.weather.description);
           }
           return Scaffold(
-            body: Container(
+            body:
+            Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(backgroundImage),
@@ -214,7 +204,9 @@ class _HomescreenState extends State<Homescreen> {
                                   style: TextStyle(fontSize: 16, fontWeight:
                                   FontWeight.bold),
                                 ),
-                                SizedBox(width: 190),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.5,
+                                ),
                                 IconButton(
                                     onPressed: (){
                                       context.read<AuthBloc>().add(LogoutRequested());
@@ -406,11 +398,8 @@ class _HomescreenState extends State<Homescreen> {
                                           ],
                                         ) ,
                                       ),
-
-
                                     ],
                                   );
-
                                 } else if (weatherState is WeatherError) {
                                   return Center(child: Text(fLoad + weatherState.message));
                                 }
@@ -431,7 +420,6 @@ class _HomescreenState extends State<Homescreen> {
                     },
                   ),
                 ],
-
               ),
             ),
           );
