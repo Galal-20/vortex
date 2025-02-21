@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vortex/src/feature/authentication/presentation/AuthBloc.dart';
-import 'package:vortex/src/feature/authentication/presentation/AuthState.dart';
+import 'package:vortex/src/feature/authentication/presentation/AuthBloc/AuthBloc.dart';
+import 'package:vortex/src/feature/authentication/presentation/AuthBloc/AuthState.dart';
 import 'package:vortex/src/feature/authentication/presentation/login/screen/widget/forgetpassword/forget-password-modal_bottom_sheet.dart';
-import 'package:vortex/src/feature/home/HomeScreen.dart';
+import 'package:vortex/src/feature/home/presentation/screen/HomeScreen.dart';
 
 import '../../../../../core/constants/image_strings.dart';
 import '../../../../../core/constants/strings.dart';
 import '../../../../../core/utils/validations.dart';
-import '../../AuthEvent.dart';
+import '../../AuthBloc/AuthEvent.dart';
 import '../../text_form_field.dart';
 
 class LoginForm extends StatefulWidget {

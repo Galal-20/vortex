@@ -8,7 +8,7 @@ import 'package:vortex/src/feature/splash_screen/presentation/bloc/SplashState.d
 import '../../../../core/constants/image_strings.dart';
 import '../../../../core/constants/size.dart';
 import '../../../../core/constants/strings.dart';
-import '../../../home/HomeScreen.dart';
+import '../../../home/presentation/screen/HomeScreen.dart';
 import '../../../welcome_screen/presentation/screen/welcome_screen.dart';
 import '../bloc/SplashEvent.dart';
 

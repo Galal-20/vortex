@@ -1,6 +1,8 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:vortex/src/feature/authentication/presentation/signUp/screen/SignUpScreen.dart';
 
 import '../../../../../core/constants/image_strings.dart';
@@ -27,7 +29,9 @@ class LoginFooterWidget extends StatelessWidget {
           child: OutlinedButton.icon(
               icon: Image(
                 image: AssetImage(tGoogleLogo), width: 25.0,),
-              onPressed: (){},
+              onPressed: (){
+
+              },
               label: Text("Sign-in with Google",
                 style: TextStyle(color: Colors.black),)),
         ),
@@ -57,3 +61,17 @@ class LoginFooterWidget extends StatelessWidget {
     );
   }
 }
+
+
+/*
+class AuthSer{
+  signInWithGoogle() async{
+    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: gAuth.accessToken,
+      idToken: gAuth.idToken
+    );
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+}*/

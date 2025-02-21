@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vortex/src/core/utils/validations.dart';
-import 'package:vortex/src/feature/authentication/presentation/AuthBloc.dart';
-import 'package:vortex/src/feature/authentication/presentation/AuthEvent.dart';
-import 'package:vortex/src/feature/authentication/presentation/AuthState.dart';
+import 'package:vortex/src/feature/authentication/presentation/AuthBloc/AuthBloc.dart';
+import 'package:vortex/src/feature/authentication/presentation/AuthBloc/AuthEvent.dart';
+import 'package:vortex/src/feature/authentication/presentation/AuthBloc/AuthState.dart';
 import 'package:vortex/src/feature/authentication/presentation/login/screen/LoginScreen.dart';
 
 import '../../text_form_field.dart';

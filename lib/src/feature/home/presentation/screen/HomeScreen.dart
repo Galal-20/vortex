@@ -11,14 +11,14 @@ import 'package:vortex/src/feature/authentication/presentation/signUp/screen/Sig
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherBloc.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherEvent.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherState.dart';
-import 'package:vortex/src/feature/home/presentation/location-widget.dart';
+import 'package:vortex/src/feature/home/presentation/screen/location-widget.dart';
 import 'package:vortex/src/feature/home/presentation/screen/daily_weather_card_widget.dart';
 import 'package:vortex/src/feature/welcome_screen/presentation/screen/welcome_screen.dart';
 
-import '../../core/constants/image_strings.dart';
-import '../authentication/presentation/AuthBloc.dart';
-import '../authentication/presentation/AuthEvent.dart';
-import '../authentication/presentation/AuthState.dart';
+import '../../../../core/constants/image_strings.dart';
+import '../../../authentication/presentation/AuthBloc/AuthBloc.dart';
+import '../../../authentication/presentation/AuthBloc/AuthEvent.dart';
+import '../../../authentication/presentation/AuthBloc/AuthState.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
