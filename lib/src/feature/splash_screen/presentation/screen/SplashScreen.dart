@@ -8,7 +8,7 @@ import 'package:vortex/src/feature/splash_screen/presentation/bloc/SplashState.d
 import '../../../../core/constants/image_strings.dart';
 import '../../../../core/constants/size.dart';
 import '../../../../core/constants/strings.dart';
-import '../../../home/HomeScreen.dart';
+import '../../../home/presentation/screen/HomeScreen.dart';
 import '../../../welcome_screen/presentation/screen/welcome_screen.dart';
 import '../bloc/SplashEvent.dart';
 
@@ -29,17 +29,14 @@ class SplashScreen extends StatelessWidget {
       child: BlocListener<SplashBloc, SplashState>(
         listener: (context, state) async {
           if (state is SplashFadingOut) {
-            bool isLoggedIn = await _isUserLoggedIn();
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            bool isLoggedIn = prefs.getBool("isLoggedIn") ?? false;
             Navigator.of(context).pushReplacement(
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
                 isLoggedIn ? const Homescreen() : const WelcomeScreen(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
                 },
                 transitionDuration: const Duration(milliseconds: 1000),
               ),

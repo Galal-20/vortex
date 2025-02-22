@@ -3,11 +3,20 @@ class Assets {
   Assets._();
 
   static const String animationsAnimation = 'assets/animations/animation.json';
-  static const String imagesBack = 'assets/images/back.jpg';
   static const String imagesCloud = 'assets/images/cloud.jpg';
   static const String imagesCloudy = 'assets/images/cloudy.png';
+  static const String imagesCo = 'assets/images/co.png';
   static const String imagesForget = 'assets/images/forget.jpg';
   static const String imagesGoogleLogo = 'assets/images/google_logo.png';
+  static const String imagesHumidity = 'assets/images/humidity.png';
+  static const String imagesRain = 'assets/images/rain.jpg';
+  static const String imagesSea = 'assets/images/sea.png';
+  static const String imagesSnow = 'assets/images/snow.jpg';
+  static const String imagesSunny = 'assets/images/sunny.jpg';
+  static const String imagesSunrise = 'assets/images/sunrise.png';
+  static const String imagesSunset = 'assets/images/sunset.png';
+  static const String imagesWarning = 'assets/images/warning.png';
   static const String imagesWelcome = 'assets/images/welcome.jpg';
+  static const String imagesWs = 'assets/images/ws.png';
 
 }

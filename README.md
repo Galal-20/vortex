@@ -1,16 +1,14 @@
 # vortex
 
-Weather Application
+Weather flutter app
 
-## Getting Started
+## Home Screen
 
-This project is a starting point for a Flutter application.
+Get current location.
+Fetch and display the current weather along with a 7-day forecast.
+Background change based on Weather description.
 
-A few resources to get you started if this is your first Flutter project:
+Video like
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- [Like](https://drive.google.com/file/d/1MPUcgEYXHL5dLhvdzPJGeU9YR58O9ncL/view?usp=sharing)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

@@ -2,7 +2,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../data/AuthRepository.dart';
+import '../../data/AuthRepository.dart';
 import 'AuthEvent.dart';
 import 'AuthState.dart';
 
@@ -69,7 +69,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await prefs.remove("email");
     await prefs.remove("displayName");
     await prefs.clear();
-    emit(AuthInitial());
+    emit(Unauthenticated());
   }
 
   Future<void> _onAutoLoginRequested(
@@ -81,7 +81,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (email != null) {
       emit(Authenticated(displayName: displayName ?? "User", email: email));
     } else {
-      emit(AuthInitial());
+      emit(Unauthenticated());
     }
   }
 }

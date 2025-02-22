@@ -32,8 +32,9 @@ class SignUpFooterWidget extends StatelessWidget {
         const SizedBox(height: 20,),
         TextButton(
             onPressed: (){
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Loginscreen())
+              Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => Loginscreen()),
+                    (route) => false,
               );
             },
             child: Text.rich(

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vortex/src/feature/authentication/presentation/AuthBloc.dart';
-import 'package:vortex/src/feature/authentication/presentation/AuthEvent.dart';
-import 'package:vortex/src/feature/authentication/presentation/AuthState.dart';
-import 'package:vortex/src/feature/home/HomeScreen.dart';
+import 'package:vortex/src/core/utils/validations.dart';
+import 'package:vortex/src/feature/authentication/presentation/AuthBloc/AuthBloc.dart';
+import 'package:vortex/src/feature/authentication/presentation/AuthBloc/AuthEvent.dart';
+import 'package:vortex/src/feature/authentication/presentation/AuthBloc/AuthState.dart';
+import 'package:vortex/src/feature/authentication/presentation/login/screen/LoginScreen.dart';
+
+import '../../text_form_field.dart';
 
 class SignUpFormWidget extends StatefulWidget {
   const SignUpFormWidget({
@@ -19,41 +21,52 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
   final _formKey = GlobalKey<FormState>();
   String fullName =" ", email =" ", phone =" ", password =" " ;
   bool isLoading = false;
+  bool _isPasswordHidden = true;
 
-  void _saveAuthState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("isLoggedIn", true);
-  }
-  
+
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc,AuthState>(
         listener: (context, state){
-         /* if (state is AuthLoading) {
+          if (state is AuthLoading) {
             showDialog(
               context: context,
               barrierDismissible: false,
               builder: (context) => Center(child: CircularProgressIndicator()),
             );
-          } else if (state is AuthError) {
-            Navigator.pop(context); // Remove loading
+          }
+          else if (state is AuthError) {
+            Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
-          } else if (state is Authenticated) {
-            Navigator.pop(context); // Remove loading
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Homescreen()));
-          }*/
-          setState(() => isLoading = state is AuthLoading);
-
-          if (state is AuthError) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.message)));
-          } else if (state is Authenticated) {
-            _saveAuthState();
-            Navigator.pop(context);
-            Navigator.of(context, rootNavigator: true).pushReplacement(
-              MaterialPageRoute(builder: (context) => Homescreen()),
+          }
+          else if (state is Authenticated) {
+            context.read<AuthBloc>().emit(AuthInitial());
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => Center(
+                  child:
+                  AlertDialog(
+                    title: Text("Congratulation", style: TextStyle(color: Colors
+                        .black),),
+                    content: Text("Sign Up successfully, Let's go to login."),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => Loginscreen()),
+                                (Route<dynamic> route) => false,
+                          );
+                        },
+                        child: Text("Login"),
+                      ),
+                    ],
+                  )
+              ),
             );
           }
         },
@@ -64,48 +77,81 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextFormField(
-                  onChanged: (value) =>fullName = value,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.person_outline_outlined),
-                      labelText: "Full Name ",
-                      hintText: "Full Name",
-                      border: OutlineInputBorder()
-                  ),
+                // full name
+                TextFieldClass.buildTextFormField(
+                  "Full Name",
+                  "Full Name",
+                    (value){
+                      if(value == null || value.trim().isEmpty){
+                        return "Full name is required";
+                      } else if (value.trim().length < 3) {
+                        return "Full Name must be at least 3 characters";
+                      }
+                      return null;
+                    },
+                      (value) => fullName = value,
+                  Icon(Icons.person_outline_outlined),
                 ),
                 SizedBox(height: 20,),
-                TextFormField(
-                  onChanged: (value) => email = value,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.fingerprint),
-                    labelText: "E-mail",
-                    hintText: "Email",
-                    border: OutlineInputBorder(),
-                    /*suffixIcon: IconButton(onPressed: null,
-                          icon: Icon(Icons.remove_red_eye))*/
-                  ),
+                // Email
+                TextFieldClass.buildTextFormField(
+                  "Email",
+                  "Enter your email",
+                      (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "Email is required";
+                    } else if (!Validation.isValidateEmail(value)) {
+                      return "Enter a valid email address";
+                    }
+                    return null;
+                  },
+                    (value) => email = value,
+                    Icon(Icons.mail_outline_rounded)
                 ),
                 SizedBox(height: 20,),
-                TextFormField(
-                  onChanged: (value) => phone = value,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.numbers_outlined),
-                      labelText: "Phone Number ",
-                      hintText: "Phone Number",
-                      border: OutlineInputBorder()
-                  ),
+                // Phone Number
+                TextFieldClass.buildTextFormField(
+                    "Phone Number",
+                    "Phone Number",
+                        (value){
+                      if (value == null || value.trim().isEmpty) {
+                        return "Phone number is required";
+                      } else if (!Validation.isValidPhone(value)) {
+                        return "Enter a valid phone number (11 digits)";
+                      }
+                      return null;
+                    },
+                        (value) => phone = value,
+                    Icon(Icons.phone)
                 ),
                 SizedBox(height: 20,),
-                TextFormField(
-                  onChanged: (value) => password = value,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.fingerprint),
-                      labelText: "Password",
-                      hintText: "Password",
-                      border: OutlineInputBorder(),
-                      suffixIcon: IconButton(onPressed: null,
-                          icon: Icon(Icons.remove_red_eye))
+                // password
+                TextFieldClass.buildTextFormField(
+                    "Password", 
+                    "Password",
+                        (value){
+                          if (value == null || value.trim().isEmpty) {
+                            return "Password is required";
+                          } else if (value.length < 6) {
+                            return "Password must be at least 6 characters";
+                          } else if (!Validation.isValidatePassword(value)) {
+                            return "Password must contain uppercase, lowercase, number, and special character";
+                          }
+                          return null;
+                    },
+                        (value) => password = value,
+                  Icon(Icons.fingerprint),
+                  suffixIcon:
+                  IconButton(
+                      onPressed: ()
+                      {
+                        setState(() {
+                          _isPasswordHidden = !_isPasswordHidden;
+                        });
+                      },
+                      icon: Icon(_isPasswordHidden ? Icons.visibility_off : Icons.visibility)
                   ),
+                  obscureText: _isPasswordHidden
                 ),
                 SizedBox(height: 20,),
                 SizedBox(
