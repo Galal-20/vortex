@@ -8,7 +8,8 @@ class WeatherLoading extends WeatherState {}
 
 class WeatherLoaded extends WeatherState {
   final WeatherEntity weather;
-  WeatherLoaded(this.weather);
+  final bool shouldGoToClub;
+  WeatherLoaded(this.weather, this.shouldGoToClub);
 }
 
 class WeatherError extends WeatherState {

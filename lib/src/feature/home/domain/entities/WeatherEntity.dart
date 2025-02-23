@@ -18,8 +18,6 @@ class DailyWeather {
 }
 
 
-
-
 class WeatherEntity {
   final double temperature;
   final double minTemperature;
@@ -33,7 +31,6 @@ class WeatherEntity {
   final int seaLevel;
   final int clouds;
   final List<DailyWeather> dailyForecast;
-
 
   WeatherEntity({
     required this.temperature,
@@ -50,4 +47,5 @@ class WeatherEntity {
     required this.dailyForecast,
 
   });
+
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
@@ -163,6 +164,338 @@ class _HomescreenState extends State<Homescreen> {
           });
         }
       },
+      child: BlocListener<WeatherBloc, WeatherState>(
+        listener: (context, weatherState) {
+          if (weatherState is WeatherLoaded) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Warning"),
+                    content: Text(
+                      weatherState.shouldGoToClub
+                          ? goodWeather
+                          : badWeather,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text("OK"),
+                      ),
+                    ],
+                  );
+                },
+              );
+            });
+          }
+        },
+        child: BlocBuilder<WeatherBloc, WeatherState>(
+          builder: (context, weatherState) {
+            String backgroundImage = "";
+            if (weatherState is WeatherLoaded) {
+              backgroundImage = _getBackgroundImage(weatherState.weather.description);
+            }
+            return Scaffold(
+              body: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(backgroundImage),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 60,),
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        if (state is Authenticated) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              // Location
+                              LocationWidget(locationText: locationText),
+                              SizedBox(height: 20,),
+                              // Name and signOut
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  SizedBox(width: 5,),
+                                  Text(
+                                    "Hello,\n${state.displayName ?? "User"}",
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(width: MediaQuery.of(context).size.width * 0.5),
+                                  IconButton(
+                                    onPressed: () {
+                                      context.read<AuthBloc>().add(LogoutRequested());
+                                    },
+                                    icon: Icon(Icons.exit_to_app_rounded, size: 30, color: Colors.red),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20,),
+                              BlocBuilder<WeatherBloc, WeatherState>(
+                                builder: (context, weatherState) {
+                                  if (weatherState is WeatherLoading) {
+                                    return Center(child: CircularProgressIndicator());
+                                  } else if (weatherState is WeatherLoaded) {
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Image.network(
+                                              "https://openweathermap.org/img/wn/${weatherState.weather.icon}@2x.png",
+                                              width: 80,
+                                              height: 80,
+                                              errorBuilder: (context, error, stackTrace) => Icon(Icons.cloud, size: 80),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(nameDay, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                                Text(dateTime, style: TextStyle(fontSize: 14)),
+                                                Text(time, style: TextStyle(fontSize: 14)),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(weatherState.weather.description, style: TextStyle(fontSize: 16)),
+                                                Text("${weatherState.weather.temperature} °C", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                                Text("${weatherState.weather.minTemperature} °C / ${weatherState.weather.maxTemperature} °C",
+                                                  style: TextStyle(fontSize: 14, color: Colors.black),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 30,),
+                                        // Daily forecast weather for 7 days:
+                                        SizedBox(
+                                          height: 200,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: weatherState.weather.dailyForecast.length - 1,
+                                            itemBuilder: (context, index) {
+                                              final daily = weatherState.weather.dailyForecast[index + 1];
+                                              return DailyWeatherCard(
+                                                day: DateFormat('EEE').format(DateTime.fromMillisecondsSinceEpoch(daily.date * 1000)),
+                                                weatherDescription: daily.description,
+                                                maxTemp: daily.maxTemp.toString(),
+                                                minTemp: daily.minTemp.toString(),
+                                                iconUrl: "https://openweathermap.org/img/wn/${daily.icon}@2x.png",
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        // Current weather data footer:
+                                        SizedBox(height: 50),
+                                        Container(
+                                          margin: EdgeInsets.symmetric
+                                            (horizontal: 10),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white.withOpacity(0.2),
+                                            borderRadius: BorderRadius.circular(16),
+                                            border: Border.all(color: Colors.black,width: 2),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Padding(padding: EdgeInsets.symmetric
+                                                (vertical: 10),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                          image: AssetImage
+                                                            (ws),
+                                                          width: 60,
+                                                          height: 60,
+                                                        ),
+                                                        SizedBox(width: 10,),
+                                                        Text("Wind Speed:\n${weatherState.weather.windSpeed} m/s",
+                                                            style: TextStyle
+                                                              (fontSize: 16,
+                                                                fontWeight: FontWeight.bold)),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                          image: AssetImage
+                                                            (humidity),
+                                                          width: 60,
+                                                          height: 60,
+                                                        ),
+                                                        SizedBox(width: 10,),
+                                                        Text("Humidity:\n${weatherState.weather.windSpeed}%",
+                                                            style: TextStyle
+                                                              (fontSize: 16,fontWeight: FontWeight.bold)),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                          image: AssetImage
+                                                            (co),
+                                                          width: 60,
+                                                          height: 60,
+                                                        ),
+                                                        SizedBox(width: 10,),
+                                                        Text("Clouds:\n${weatherState.weather.windSpeed}%",
+                                                            style: TextStyle
+                                                              (fontSize: 16, fontWeight: FontWeight.bold)),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(padding: EdgeInsets.symmetric
+                                                (vertical: 20),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                          image: AssetImage
+                                                            (sea),
+                                                          width: 60,
+                                                          height: 60,
+                                                        ),
+                                                        SizedBox(width: 10,),
+                                                        Text("Sea:\n${weatherState.weather.windSpeed}hPa",
+                                                            style: TextStyle
+                                                              (fontSize: 16, fontWeight: FontWeight.bold)),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                          image: AssetImage
+                                                            (sunrise),
+                                                          width: 60,
+                                                          height: 60,
+                                                        ),
+                                                        SizedBox(width: 10,),
+                                                        Text(
+                                                            "Sunrise:\n${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunrise * 1000))}",
+                                                            style: TextStyle
+                                                              (fontSize: 16, fontWeight: FontWeight.bold)),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                          image: AssetImage
+                                                            (sunset),
+                                                          width: 60,
+                                                          height: 60,
+                                                        ),
+                                                        SizedBox(width: 10,),
+                                                        Text("Sunset:\n${DateFormat('h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weatherState.weather.sunset * 1000))}",
+                                                            style: TextStyle
+                                                              (fontSize: 16, fontWeight: FontWeight.bold))
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ) ,
+                                        ),
+                                      ],
+                                    );
+                                  } else if (weatherState is WeatherError) {
+                                    return Center(child: Text(fLoad + weatherState.message));
+                                  }
+                                  return Text(fDw);
+                                },
+                              ),
+                            ],
+                          );
+                        } else if (state is AuthLoading) {
+                          return CircularProgressIndicator();
+                        } else if (state is AuthError) {
+                          return Text("Error: ${state.message}");
+                        } else if (state is Unauthenticated) {
+                          return Text(not_authenticated);
+                        }
+                        return Text(not_authenticated);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+
+/*class WeatherDialog {
+  static void show(BuildContext context, bool shouldGoToClub) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          title: Text(
+            shouldGoToClub ? "Ideal Weather for Outdoor Activities" : "Adverse Weather Conditions",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: shouldGoToClub ? Colors.green : Colors.red,
+            ),
+          ),
+          content: Text(
+            shouldGoToClub
+                ? "The weather is perfect for going to the club. Enjoy your day!"
+                : "The weather is not suitable for outdoor activities. It's best to stay indoors.",
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("OK", style: TextStyle(fontSize: 16)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}*/
+
+/*@override
+  Widget build(BuildContext context) {
+    return BlocListener<AuthBloc, AuthState>(
+
+      listener: (context, state) {
+        if (state is AuthInitial || state is Unauthenticated) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => WelcomeScreen()),
+                  (route) => false,
+            );
+          });
+        }
+
+      },
       child: BlocBuilder<WeatherBloc, WeatherState>(
         builder: (context, weatherState){
           String backgroundImage = "";
@@ -253,8 +586,10 @@ class _HomescreenState extends State<Homescreen> {
                                               Text("${weatherState.weather.minTemperature} °C / ${weatherState.weather.maxTemperature} °C",
                                                 style: TextStyle(fontSize: 14, color: Colors.black),
                                               ),
+
                                             ],
                                           ),
+
                                         ],
                                       ),
                                       SizedBox(height: 30,),
@@ -426,10 +761,22 @@ class _HomescreenState extends State<Homescreen> {
         },
       ),
     );
-  }
-}
+  }*/
 
-
-
-
+/*
+* AlertDialog(
+                                                title: Text("Weather Update"),
+                                                content: Text(
+                                                  weatherState.shouldGoToClub
+                                                      ? "✅ The weather is great for going to the club!"
+                                                      : "❌ The weather conditions are not ideal. Better stay home!",
+                                                  style: TextStyle(fontSize: 16),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () => Navigator.of(context).pop(),
+                                                    child: Text("OK"),
+                                                  ),
+                                                ],
+                                              )*/
 

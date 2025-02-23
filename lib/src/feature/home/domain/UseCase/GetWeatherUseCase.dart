@@ -9,4 +9,5 @@ class GetWeatherUseCase {
   Future<WeatherEntity> call(double lat, double lon) {
     return repository.getWeather(lat, lon);
   }
+
 }

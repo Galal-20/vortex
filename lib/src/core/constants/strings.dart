@@ -30,3 +30,5 @@ const light_snow = "light snow";
 const not_authenticated = "Not authenticated, Please log in to continue";
 const fDw = "Fetching weather data...";
 const fLoad = "Failed to load weather data:";
+const goodWeather = "✅ Today weather is great for going to the club!";
+const badWeather = "❌ Today weather is bad, better stay home!";
