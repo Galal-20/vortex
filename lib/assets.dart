@@ -22,6 +22,8 @@ class Assets {
 
   static const AssetsImagesSunrise = 'assets/images/sunrise.png';
 
+  static const AssetsImagesWarning = 'assets/images/warning.png';
+
   static const AssetsImagesWelcome = 'assets/images/welcome.jpg';
 
   static const AssetsImagesHumidity = 'assets/images/humidity.png';

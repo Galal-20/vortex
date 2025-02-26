@@ -9,6 +9,7 @@ import 'package:vortex/src/feature/authentication/presentation/AuthBloc/AuthBloc
 import 'package:vortex/src/feature/authentication/presentation/AuthBloc/AuthEvent.dart';
 import 'package:vortex/src/feature/home/data/WeatherRepositoryImpl.dart';
 import 'package:vortex/src/feature/home/domain/UseCase/GetWeatherUseCase.dart';
+import 'package:vortex/src/feature/home/domain/repository/WeatherRepository.dart';
 import 'package:vortex/src/feature/home/presentation/bloc/WeatherBloc.dart';
 import 'package:vortex/src/feature/splash_screen/domain/SplashUseCase.dart';
 import 'package:vortex/src/feature/splash_screen/presentation/bloc/SplashBloc.dart';
@@ -34,7 +35,11 @@ void main() async {
           },
         ),
         BlocProvider(
-          create: (context) => WeatherBloc(GetWeatherUseCase(context.read<WeatherRepositoryImpl>())),
+          create: (context) =>
+              WeatherBloc(
+                  GetWeatherUseCase(context.read<WeatherRepositoryImpl>()),
+                context.read<WeatherRepositoryImpl>(),
+              ),
         ),
         BlocProvider(
           create: (context) => SplashBloc(splashUseCase: Splashusecase()),
