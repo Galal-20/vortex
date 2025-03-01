@@ -34,7 +34,7 @@ pip install scikit-learn==1.3.2
 
 3- install these file and add in your project:
 
-- [Files](https://drive.google.com/file/d/1goCoq54vMs_8En-hF-r7x6fx6FwvPdoL/view?usp=sharing)
+- [Files](https://drive.google.com/drive/folders/1Px0YPSZnVgpVBbkLilHwCYNwh6TmpyH4?usp=sharing)
 
 4- After install files in your project, run this command in the terminal.
 
